@@ -25,6 +25,23 @@ model User {
   accounts      Account[]
   isTwoFactorEnabled Boolean @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  organizations OrganizationUser[]
+}
+
+model Organization {
+  id String @id @default(cuid())
+  name String
+  users OrganizationUser[]
+}
+
+model OrganizationUser {
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@id([userId, organizationId])
 }
 
 model Account {

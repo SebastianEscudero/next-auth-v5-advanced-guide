@@ -64,6 +64,7 @@ export const {
       }
 
       if (session.user) {
+        session.user.organizations = token.organizations as any[];
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.isOAuth = token.isOAuth as boolean;
@@ -87,7 +88,13 @@ export const {
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
-
+      token.organizations = existingUser.organizations.map((org) => ({
+        id: org.organization.id,
+        name: org.organization.name,
+        users: org.organization.users.map((userId) => ({
+          id: userId
+        }))
+      }))
       return token;
     }
   },

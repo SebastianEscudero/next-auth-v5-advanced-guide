@@ -1,6 +1,7 @@
 import { Poppins } from "next/font/google";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -20,7 +21,14 @@ export const Header = ({
         "text-3xl font-semibold",
         font.className,
       )}>
-        🔐 Auth
+        <div className="flex flex-row">
+          <Image 
+            src="/logo.svg"
+            width={100}
+            height={100}
+            alt="Logo"
+          />
+        </div>
       </h1>
       <p className="text-muted-foreground text-sm">
         {label}
