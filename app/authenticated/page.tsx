@@ -5,12 +5,13 @@ import { Sidebar } from "./components_/sidebar";
 import { UserButton } from "@/components/auth/user-button";
 import { EmptyOrg } from "@/components/empty-org";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { OrgSidebar } from "./components_/org-sidebar";
 
 const DashboardPage = () => {
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
 
   const user = useCurrentUser();
-  const organization = user?.organizations.length;
+  const HasOrg = user?.organizations.length;
 
   useEffect(() => {
     setActiveOrganization(localStorage.getItem("activeOrganization"));
@@ -29,15 +30,18 @@ const DashboardPage = () => {
       />
       <div className="pl-[60px] h-full">
         <div className="flex gap-x-3 h-full">
-          <h1>hi</h1>
+          <OrgSidebar 
+            setActiveOrganization={setActiveOrganization}
+            activeOrganization={activeOrganization}
+          />
           <div className="h-full flex-1">
-            <UserButton />
             <div className="flex-1 h-[calc(100%-80px)] p-6">
-              {!organization ? (
+              {!HasOrg ? (
                 <EmptyOrg setActiveOrganization={setActiveOrganization} />
               ) : (
-                <h1>{organization}</h1>
+                <h1>the user has organizations {HasOrg} user: {user.name} activeorg: {activeOrganization}</h1>
               )}
+              <UserButton />
             </div>
           </div>
         </div>

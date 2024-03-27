@@ -33,9 +33,9 @@ export const UserButton = () => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="rounded-2xl">
-        <div className="w-full p-5 mr-10">
-          <div className="flex flex-row mb-3 items-center">
+      <DropdownMenuContent align="end" className="rounded-2xl shadow-xl">
+        <div className="w-full mr-10">
+          <div className="flex flex-row mb-3 items-center p-5 pb-0">
             <Avatar>
               <AvatarImage src={user?.image || ""} />
               <AvatarFallback className="bg-custom-blue">
@@ -52,13 +52,13 @@ export const UserButton = () => {
             </div>
           </div>
           <SettingsButton>
-            <DropdownMenuItem className="py-3">
+            <DropdownMenuItem className="py-3 px-5">
               <FcSettings className="h-4 w-4 mr-2" />
               <p className="ml-5">Manage account</p>
             </DropdownMenuItem>
           </SettingsButton>
           <LogoutButton>
-            <DropdownMenuItem className="py-3">
+            <DropdownMenuItem className="py-3 px-5 mb-5">
               <ExitIcon className="h-4 w-4 mr-2" />
               <p className="ml-5">Sign out</p>
             </DropdownMenuItem>
