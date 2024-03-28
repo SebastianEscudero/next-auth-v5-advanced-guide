@@ -88,13 +88,18 @@ export const {
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
-      token.organizations = existingUser.organizations.map((org) => ({
+      token.organizations = await Promise.all(existingUser.organizations.map(async (org) => ({
         id: org.organization.id,
         name: org.organization.name,
-        users: org.organization.users.map((userId) => ({
-          id: userId
-        }))
-      }))
+        users: await Promise.all(org.organization.users.map(async ({userId}) => {
+          const user = await getUserById(userId);
+            return {
+              id: user?.id,
+              name: user?.name,
+              email: user?.email,
+            };
+          }))
+        })));
       return token;
     }
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeftRight, ChevronsUpDown, PlusIcon } from "lucide-react"
+import { ChevronsUpDown, PlusIcon } from "lucide-react"
 
 import {
     DropdownMenu,
@@ -35,13 +35,10 @@ export const OrganizationSwitcher = ({
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
     const otherOrgs = user.organizations.filter(org => org.id !== activeOrganization);
 
-    if (!activeOrg) return null;
-    if (!otherOrgs) return null;
-
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[5px] flex items-center hover:bg-zinc-200">
-                {hasOrg ? (
+            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[5px] flex items-center hover:bg-zinc-200 w-full max-w-[380px]">
+                {hasOrg && activeOrg ? (
                     <>
                         <div className="aspect-square relative w-[33px] flex-shrink-0">
                             <Image
@@ -59,7 +56,7 @@ export const OrganizationSwitcher = ({
                 <ChevronsUpDown className="ml-auto text-zinc-400 flex-shrink-0" width={20} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="rounded-2xl shadow-xl w-[400px]">
-                {hasOrg && (
+                {hasOrg && activeOrg && (
                     <>
                         <div className="flex mb-3 items-center p-5 pb-0">
                             <Image
@@ -73,15 +70,15 @@ export const OrganizationSwitcher = ({
                                 <p>{activeOrg.name}</p>
                             </div>
                         </div>
-                        <div className="py-3 px-8 text-[14px] hover:bg-slate-100">
+                        <div className="py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
                             <Dialog>
                                 <DialogTrigger className="flex items-center">
                                     <FcSettings className="h-4 w-4 mr-2" />
                                     <p className="ml-5">Manage organization</p>
                                 </DialogTrigger>
-                                <DialogContent>
+                                <DialogContent className="min-h-[500px] w-full max-w-[768px]">
                                     <OrganizationSettings 
-                                        activeOrganization={activeOrg}
+                                        activeOrganization={activeOrganization}
                                     />
                                 </DialogContent>
                             </Dialog>
@@ -114,7 +111,7 @@ export const OrganizationSwitcher = ({
                             <PlusIcon className="h-4 w-4 mr-2" />
                             <p className="ml-5">Create organization</p>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent className="max-w-[480px] w-full">
                             <CreateOrganization
                                 setActiveOrganization={setActiveOrganization}
                             />

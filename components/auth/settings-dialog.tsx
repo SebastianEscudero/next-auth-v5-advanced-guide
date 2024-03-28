@@ -78,7 +78,7 @@ export const SettingsModal = () => {
       <Dialog open={settingsDialog.isOpen} onOpenChange={settingsDialog.onClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Settings</DialogTitle>
+            <DialogTitle className="text-2xl font-semibold">Settings</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form

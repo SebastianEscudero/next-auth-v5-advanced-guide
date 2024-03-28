@@ -23,7 +23,6 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { organization } from "@/actions/organization";
-import { useRouter } from "next/navigation";
 
 interface CreateOrganizationProps {
   setActiveOrganization: (id: string) => void;
@@ -35,7 +34,6 @@ export const CreateOrganization = ({
 }: CreateOrganizationProps) => {
 
   const user = useCurrentUser();
-  const router = useRouter();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const { update } = useSession();
@@ -68,7 +66,6 @@ export const CreateOrganization = ({
             if (data.id) {
               setActiveOrganization(data.id);
             }
-            router.refresh();
           }
         });
     });

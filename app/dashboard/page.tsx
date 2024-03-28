@@ -6,6 +6,7 @@ import { UserButton } from "@/components/auth/user-button";
 import { EmptyOrg } from "@/components/empty-org";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { OrgSidebar } from "./components_/org-sidebar";
+import { Navbar } from "./components_/navbar";
 
 const DashboardPage = () => {
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
@@ -35,11 +36,15 @@ const DashboardPage = () => {
             activeOrganization={activeOrganization}
           />
           <div className="h-full flex-1">
+            <Navbar 
+              setActiveOrganization={setActiveOrganization}
+              activeOrganization={activeOrganization}
+            />
             <div className="flex-1 h-[calc(100%-80px)] p-6">
               {!HasOrg ? (
                 <EmptyOrg setActiveOrganization={setActiveOrganization} />
               ) : (
-                <h1>the user has organizations {HasOrg} user: {user.name} activeorg: {activeOrganization}</h1>
+                <h1>the user has {HasOrg} orgs, the user: {user.name} activeorg: {activeOrganization}</h1>
               )}
               <UserButton />
             </div>
