@@ -78,6 +78,7 @@ export const OrganizationSwitcher = ({
                                 </DialogTrigger>
                                 <DialogContent className="min-h-[500px] w-full max-w-[768px]">
                                     <OrganizationSettings 
+                                        setActiveOrganization={setActiveOrganization}
                                         activeOrganization={activeOrganization}
                                     />
                                 </DialogContent>

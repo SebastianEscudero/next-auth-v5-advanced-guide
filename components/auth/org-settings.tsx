@@ -35,14 +35,15 @@ import { DialogClose } from "../ui/dialog";
 
 interface OrganizationSettingsProps {
   activeOrganization: string | null;
+  setActiveOrganization: (id: string) => void;
 }
 
 export const OrganizationSettings = ({
   activeOrganization,
+  setActiveOrganization,
 }: OrganizationSettingsProps) => {
   const user = useCurrentUser();
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
-
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const { update } = useSession();
@@ -178,7 +179,14 @@ export const OrganizationSettings = ({
                 Cancel
               </Button>
               <DialogClose>
-                <Button variant="destructive" onClick={() => deleteOrganization(activeOrg.id)}>
+                <Button variant="destructive" 
+                  onClick={() => deleteOrganization(activeOrg.id)
+                    .then(() =>  {
+                    setActiveOrganization("null");
+                    localStorage.setItem("activeOrganization", "null");
+                    update();}
+                  )}
+                > 
                   Delete Organization
                 </Button>
               </DialogClose>

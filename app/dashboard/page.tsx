@@ -12,7 +12,6 @@ const DashboardPage = () => {
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
 
   const user = useCurrentUser();
-  const HasOrg = user?.organizations.length;
 
   useEffect(() => {
     setActiveOrganization(localStorage.getItem("activeOrganization"));
@@ -22,6 +21,8 @@ const DashboardPage = () => {
     if (!activeOrganization) return;
     localStorage.setItem("activeOrganization", activeOrganization);
   }, [activeOrganization]);
+
+  console.log(activeOrganization)
 
   return (
     <main className="h-full">
@@ -41,12 +42,14 @@ const DashboardPage = () => {
               activeOrganization={activeOrganization}
             />
             <div className="flex-1 h-[calc(100%-80px)] p-6">
-              {!HasOrg ? (
+              {!activeOrganization || activeOrganization === "null" ? (
                 <EmptyOrg setActiveOrganization={setActiveOrganization} />
               ) : (
-                <h1>the user has {HasOrg} orgs, the user: {user.name} activeorg: {activeOrganization}</h1>
+                <div>
+                  <h1>{user?.name} activeorg: {activeOrganization}</h1>
+                  <UserButton />
+                </div>
               )}
-              <UserButton />
             </div>
           </div>
         </div>
