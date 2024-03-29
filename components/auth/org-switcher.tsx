@@ -41,7 +41,7 @@ export const OrganizationSwitcher = ({
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[5px] flex items-center hover:bg-zinc-200 w-full max-w-[380px]">
+            <DropdownMenuTrigger className="border border-zinc-200 rounded-lg p-[10px] flex items-center hover:bg-zinc-200 w-full max-w-[380px]">
                 {hasOrg && activeOrg ? (
                     <>
                         <div className="aspect-square relative w-[33px] flex-shrink-0">
@@ -52,13 +52,20 @@ export const OrganizationSwitcher = ({
                                 className="rounded-md"
                             />
                         </div>
-                        <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
-                        {invitations.length > 0 && (
-                            <p className="ml-10 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
-                        )}
+                        <div className="flex items-center truncate pr-2">
+                            <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                            {invitations.length > 0 && (
+                                <p className="ml-2 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
+                            )}
+                        </div>
                     </>
                 ) : (
-                    <p className="ml-3 text-sm truncate">No organization</p>
+                    <div className="flex items-center truncate pr-2">
+                        <p className="ml-3 text-sm truncate">No organization selected</p>
+                        {invitations.length > 0 && (
+                            <p className="ml-2 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
+                        )}
+                    </div>
                 )}
                 <ChevronsUpDown className="ml-auto text-zinc-400 flex-shrink-0" width={20} />
             </DropdownMenuTrigger>
@@ -77,12 +84,13 @@ export const OrganizationSwitcher = ({
                                 <p>{activeOrg.name}</p>
                             </div>
                         </div>
-                        <div className="border-b py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
                             <Dialog>
-                                <DialogTrigger className="flex items-center">
-                                    <FcSettings className="h-4 w-4 mr-2" />
-                                    <p className="ml-5">Manage organization</p>
-                                </DialogTrigger>
+                                <div className="border-b py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
+                                    <DialogTrigger className="flex items-center">
+                                        <FcSettings className="h-4 w-4 mr-2" />
+                                        <p className="ml-5">Manage organization</p>
+                                    </DialogTrigger>
+                                </div>
                                 <DialogContent className="min-h-[500px] w-full max-w-[768px]">
                                     <OrganizationSettings
                                         setActiveOrganization={setActiveOrganization}
@@ -90,13 +98,12 @@ export const OrganizationSwitcher = ({
                                     />
                                 </DialogContent>
                             </Dialog>
-                        </div>
                     </>
                 )}
                 {invitations.length > 0 && (
                     <div className="border-b py-2">
                         {invitations.map((invitation) => (
-                            <DropdownMenuItem
+                            <div
                                 key={invitation.id}
                                 className="py-1.5 px-5 flex items-center"
                             >
@@ -110,13 +117,15 @@ export const OrganizationSwitcher = ({
                                 <p className="ml-5 text-sm truncate">
                                     {invitation.organization.name}
                                 </p>
-                                <Button
-                                    onClick={() => acceptInvite(invitation.organization.id, invitation.id)}
-                                    variant="auth"
-                                    className="ml-auto">
-                                    Join
-                                </Button>
-                            </DropdownMenuItem>
+                                <DropdownMenuItem className="ml-auto border border-zinc-300 p-0">
+                                    <Button
+                                        onClick={() => acceptInvite(invitation.organization.id, invitation.id)}
+                                        variant="ghost"
+                                    >
+                                        Join
+                                    </Button>
+                                </DropdownMenuItem>
+                            </div>
                         ))}
                     </div>
                 )}

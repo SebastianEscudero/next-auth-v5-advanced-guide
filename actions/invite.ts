@@ -53,29 +53,28 @@ export const invite = async (
         pendingEmails.push(email);
       } else {
         // await sendOrganizationInvite(email, activeOrg.name, user);
-        // const newInvitation = await db.organizationInvitation.create({
-        //   data: {
-        //     email: email,
-        //     organizationId: activeOrg.id,
-        //     status: 'PENDING',
-        //   },
-        // });
+        const newInvitation = await db.organizationInvitation.create({
+          data: {
+            email: email,
+            organizationId: activeOrg.id,
+            status: 'PENDING',
+          },
+        });
 
-        // await db.user.update({
-        //   where: { email: user.email },
-        //   data: {
-        //     invitations: {
-        //       connect: { id: newInvitation.id },
-        //     },
-        //   },
-        // });
-        // update({
-        //   user: {
-        //     ...user,
-        //     invitations: [...user.invitations, newInvitation],
-        //   },
-        // });
-        console.log(email)
+        await db.user.update({
+          where: { email: email },
+          data: {
+            invitations: {
+              connect: { id: newInvitation.id },
+            },
+          },
+        });
+        update({
+          user: {
+            ...user,
+            invitations: [...user.invitations, newInvitation],
+          },
+        });
       }
     }
   }

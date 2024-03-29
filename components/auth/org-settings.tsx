@@ -22,16 +22,23 @@ import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { Settings, User, X } from "lucide-react";
+import { Ellipsis, Settings, User, X } from "lucide-react";
 import { organizationSettings } from "@/actions/organization-settings";
+import { FaUser } from "react-icons/fa";
+import { deleteOrganization } from "@/actions/delete-organization";
+import { DialogClose } from "../ui/dialog";
+import { leaveOrganization } from "@/actions/leave-organizations";
 import {
   Avatar,
   AvatarImage,
   AvatarFallback,
 } from "@/components/ui/avatar";
-import { FaUser } from "react-icons/fa";
-import { deleteOrganization } from "@/actions/delete-organization";
-import { DialogClose } from "../ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface OrganizationSettingsProps {
   activeOrganization: string | null;
@@ -46,6 +53,7 @@ export const OrganizationSettings = ({
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+  const [selectedSection, setSelectedSection] = useState('Members');
   const { update } = useSession();
 
   const form = useForm<z.infer<typeof OrganizationSchema>>({
@@ -55,7 +63,6 @@ export const OrganizationSettings = ({
     }
   });
 
-  const [selectedSection, setSelectedSection] = useState('Members');
 
   const onSubmit = (values: z.infer<typeof OrganizationSchema>) => {
     organizationSettings(values, activeOrg)
@@ -71,6 +78,14 @@ export const OrganizationSettings = ({
       })
       .catch(() => setError("Something went wrong!"));
   }
+
+  {
+    activeOrg?.users.map((orgUser: any) => (
+      console.log(orgUser)
+    ))
+  }
+
+  if (!user) return null;
 
   return (
     <div className="flex">
@@ -111,7 +126,7 @@ export const OrganizationSettings = ({
         {selectedSection === 'Members' ? (
           <ul className="border-t pt-4">
             {activeOrg?.users.map((orgUser: any) => (
-              <li key={orgUser.id} className="flex">
+              <li key={orgUser.id} className="flex pb-3">
                 <Avatar>
                   <AvatarImage src={orgUser?.image || ""} />
                   <AvatarFallback className="bg-custom-blue">
@@ -120,10 +135,35 @@ export const OrganizationSettings = ({
                 </Avatar>
                 <div className="ml-2">
                   <p className="truncate text-[14px]">
-                    {orgUser.name} <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue">{orgUser.id === user?.id ? "You" : ""} </span>
+                    {orgUser.name}
+                    {orgUser.id === user?.id && (
+                      <span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue ml-1">You</span>
+                    )}
                   </p>
                   <p className="truncate text-[12px] text-zinc-400">{orgUser.email}</p>
                 </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="ml-auto">
+                    <Button variant="ghost">
+                      <Ellipsis className="text-zinc-500" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="rounded-xl shadow-xl">
+                    <DropdownMenuItem className="py-2 px-3">
+                      <p className="text-destructive" onClick={() => leaveOrganization(activeOrg.id, orgUser.id)
+                        .then((result) => {
+                          if (result.isOrgDeleted) {
+                            setActiveOrganization("null");
+                            localStorage.setItem("activeOrganization", "null");
+                          }
+                          update();
+                        })
+                      }>
+                        {orgUser.id === user?.id ? "Leave Organization" : "Remove member"}
+                      </p>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </li>
             ))}
           </ul>
@@ -164,9 +204,25 @@ export const OrganizationSettings = ({
               <p className="mt-4 pb-1 border-b">
                 Danger
               </p>
-              <Button variant="destructive" className="mt-4" onClick={() => setSelectedSection("Delete organization")}>
-                <X className="h-4 w-4 mr-2" /> Delete Organization
-              </Button>
+              <div className="flex md:flex-row flex-col justify-center">
+                <Button variant="destructive" className="mt-4 w-full md:mr-2" onClick={() => setSelectedSection("Delete organization")}>
+                  <X className="h-4 w-4 mr-2" /> Delete Organization
+                </Button>
+                <Button
+                  className="mt-4 bg-white border border-destructive text-destructive shadow-sm hover:bg-destructive/90 hover:text-white w-full md:ml-2"
+                  onClick={() => leaveOrganization(activeOrg.id, user.id)
+                    .then((result) => {
+                      setActiveOrganization("null");
+                      update();
+                      if (result.isOrgDeleted) {
+                        localStorage.setItem("activeOrganization", "null");
+                      }
+                    })
+                  }
+                >
+                  <X className="h-4 w-4 mr-2" /> Leave Organization
+                </Button>
+              </div>
             </div>
           </div>
         ) : (
@@ -179,14 +235,14 @@ export const OrganizationSettings = ({
                 Cancel
               </Button>
               <DialogClose>
-                <Button variant="destructive" 
+                <Button variant="destructive"
                   onClick={() => deleteOrganization(activeOrg.id)
-                    .then(() =>  {
-                    setActiveOrganization("null");
-                    localStorage.setItem("activeOrganization", "null");
-                    update();}
-                  )}
-                > 
+                    .then(() => {
+                      setActiveOrganization("null");
+                      localStorage.setItem("activeOrganization", "null");
+                      update();
+                    })}
+                >
                   Delete Organization
                 </Button>
               </DialogClose>
