@@ -6,7 +6,6 @@ import { EmptyOrg } from "@/components/empty-org";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { OrgSidebar } from "./components_/org-sidebar";
 import { Navbar } from "./components_/navbar";
-import { EmailTemplate } from "@/components/email-template";
 
 const DashboardPage = () => {
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
@@ -22,6 +21,8 @@ const DashboardPage = () => {
     localStorage.setItem("activeOrganization", activeOrganization);
   }, [activeOrganization]);
 
+  const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
+
   return (
     <main className="h-full">
       <Sidebar
@@ -36,15 +37,17 @@ const DashboardPage = () => {
           />
           <div className="h-full flex-1">
             <Navbar 
+
               setActiveOrganization={setActiveOrganization}
               activeOrganization={activeOrganization}
+              activeOrg={activeOrg}
             />
             <div className="flex-1 h-[calc(100%-80px)] p-6">
-              {!activeOrganization || activeOrganization === "null" ? (
+              {!activeOrg ? (
                 <EmptyOrg setActiveOrganization={setActiveOrganization} />
               ) : (
                 <div>
-                  <h1 className="text-2xl font-bold">Welcome to {activeOrganization}</h1>
+                  <h1 className="text-2xl font-bold">Welcome to {activeOrg.name}</h1>
                 </div>
               )}
             </div>

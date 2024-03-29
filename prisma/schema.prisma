@@ -26,12 +26,14 @@ model User {
   isTwoFactorEnabled Boolean @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
   organizations OrganizationUser[]
+  invitations   OrganizationInvitation[]
 }
 
 model Organization {
   id String @id @default(cuid())
   name String
   users OrganizationUser[]
+  invitations OrganizationInvitation[]
 }
 
 model OrganizationUser {
@@ -97,4 +99,21 @@ model TwoFactorConfirmation {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model OrganizationInvitation {
+  id             String    @id @default(cuid())
+  email          String
+  organizationId String
+  status         InvitationStatus @default(PENDING)
+  createdAt      DateTime  @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  user           User? @relation(fields: [email], references: [email])
+
+  @@unique([email, organizationId])
+}
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }

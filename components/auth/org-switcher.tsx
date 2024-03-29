@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsUpDown, PlusIcon } from "lucide-react"
+import { ArrowLeftRight, ChevronsUpDown, PlusIcon } from "lucide-react"
 
 import {
     DropdownMenu,
@@ -15,6 +15,8 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { CreateOrganization } from "./create-organization";
 import { OrganizationSettings } from "./org-settings";
+import { Button } from "../ui/button";
+import { acceptInvite } from "@/actions/accept-invite";
 
 
 interface OrganizationSwitcherProps {
@@ -30,10 +32,12 @@ export const OrganizationSwitcher = ({
 
     if (!user) return null;
 
-    const hasOrg = user.organizations.length > 0 
+    const hasOrg = user.organizations.length > 0
 
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
     const otherOrgs = user.organizations.filter(org => org.id !== activeOrganization);
+
+    const invitations = user.invitations;
 
     return (
         <DropdownMenu>
@@ -49,6 +53,9 @@ export const OrganizationSwitcher = ({
                             />
                         </div>
                         <p className="ml-3 text-sm truncate">{activeOrg.name}</p>
+                        {invitations.length > 0 && (
+                            <p className="ml-10 bg-custom-blue text-white px-1 mt-0.5 text-[10px] rounded-sm items-center animate-popup">{invitations.length}</p>
+                        )}
                     </>
                 ) : (
                     <p className="ml-3 text-sm truncate">No organization</p>
@@ -70,41 +77,71 @@ export const OrganizationSwitcher = ({
                                 <p>{activeOrg.name}</p>
                             </div>
                         </div>
-                        <div className="py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
+                        <div className="border-b py-3 px-8 text-[14px] hover:bg-slate-100 w-full">
                             <Dialog>
                                 <DialogTrigger className="flex items-center">
                                     <FcSettings className="h-4 w-4 mr-2" />
                                     <p className="ml-5">Manage organization</p>
                                 </DialogTrigger>
                                 <DialogContent className="min-h-[500px] w-full max-w-[768px]">
-                                    <OrganizationSettings 
+                                    <OrganizationSettings
                                         setActiveOrganization={setActiveOrganization}
                                         activeOrganization={activeOrganization}
                                     />
                                 </DialogContent>
                             </Dialog>
                         </div>
-                        <div className="border-t py-2">
-                            {otherOrgs.map((org) => (
-                                <DropdownMenuItem
-                                    onClick={() => setActiveOrganization(org.id)}
-                                    key={org.id}
-                                    className="py-1.5 px-5 flex items-center hover:bg-zinc-100 cursor-pointer"
-                                >
-                                    <Image
-                                        alt={org.name}
-                                        src="/organization.webp"
-                                        className="rounded-md flex-shrink-0"
-                                        width={35}
-                                        height={35}
-                                    />
-                                    <p className="ml-5 text-sm truncate">
-                                        {org.name}
-                                    </p>
-                                </DropdownMenuItem>
-                            ))}
-                        </div>
                     </>
+                )}
+                {invitations.length > 0 && (
+                    <div className="border-b py-2">
+                        {invitations.map((invitation) => (
+                            <DropdownMenuItem
+                                key={invitation.id}
+                                className="py-1.5 px-5 flex items-center"
+                            >
+                                <Image
+                                    alt={invitation.organization.id}
+                                    src="/organization.webp"
+                                    className="rounded-md flex-shrink-0"
+                                    width={35}
+                                    height={35}
+                                />
+                                <p className="ml-5 text-sm truncate">
+                                    {invitation.organization.name}
+                                </p>
+                                <Button
+                                    onClick={() => acceptInvite(invitation.organization.id, invitation.id)}
+                                    variant="auth"
+                                    className="ml-auto">
+                                    Join
+                                </Button>
+                            </DropdownMenuItem>
+                        ))}
+                    </div>
+                )}
+                {otherOrgs.length > 0 && (
+                    <div className="py-2">
+                        {otherOrgs.map((org) => (
+                            <DropdownMenuItem
+                                onClick={() => setActiveOrganization(org.id)}
+                                key={org.id}
+                                className="py-1.5 px-5 flex items-center hover:bg-zinc-100 cursor-pointer"
+                            >
+                                <Image
+                                    alt={org.name}
+                                    src="/organization.webp"
+                                    className="rounded-md flex-shrink-0"
+                                    width={35}
+                                    height={35}
+                                />
+                                <p className="ml-5 text-sm truncate">
+                                    {org.name}
+                                </p>
+                                <ArrowLeftRight className="h-4 w-4 ml-auto text-zinc-400" />
+                            </DropdownMenuItem>
+                        ))}
+                    </div>
                 )}
                 <div className="py-3 px-8 text-[14px] hover:bg-slate-100">
                     <Dialog>

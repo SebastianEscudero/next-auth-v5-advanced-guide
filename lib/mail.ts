@@ -15,7 +15,6 @@ export const sendTwoFactorTokenEmail = async (
     subject: "2FA Code",
     html: `
       <div style="text-align: center;">
-        <img src="https://www.sketchlie.com/logo.svg" alt="Sketchlie Logo" style="margin-bottom: 10px;"/>
         <p>Your 2FA code: ${token}</p>
       </div>
     `
@@ -34,7 +33,6 @@ export const sendPasswordResetEmail = async (
     subject: "Reset your password",
     html: `
       <div style="text-align: center;">
-        <img src="https://www.sketchlie.com/logo.svg" alt="Sketchlie Logo" style="margin-bottom: 10px;"/>
         <p>Click <a href="${resetLink}">here</a> to reset password.</p>
       </div>
     `
@@ -53,7 +51,6 @@ export const sendVerificationEmail = async (
     subject: "Confirm your email",
     html: `
       <div style="text-align: center;">
-        <img src="https://www.sketchlie.com/logo.svg" alt="Sketchlie Logo" style="margin-bottom: 10px;"/>
         <p>Click <a href="${confirmLink}">here</a> to confirm email.</p>
       </div>
     `

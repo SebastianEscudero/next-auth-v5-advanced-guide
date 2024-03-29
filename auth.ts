@@ -64,6 +64,7 @@ export const {
       }
 
       if (session.user) {
+        session.user.invitations = token.invitations as any[];
         session.user.organizations = token.organizations as any[];
         session.user.name = token.name;
         session.user.email = token.email;
@@ -88,6 +89,7 @@ export const {
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+      token.invitations = existingUser.invitations;
       token.organizations = await Promise.all(existingUser.organizations.map(async (org) => ({
         id: org.organization.id,
         name: org.organization.name,

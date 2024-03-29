@@ -7,11 +7,13 @@ import { InviteButton } from "./org-invite-button";
 interface NavbarProps {
     activeOrganization: string | null;
     setActiveOrganization: (id: string) => void;
+    activeOrg: any
   }
 
 export const Navbar = ({
     activeOrganization,
     setActiveOrganization,
+    activeOrg
 }: NavbarProps) => {
 
     return (
@@ -25,7 +27,7 @@ export const Navbar = ({
                     activeOrganization={activeOrganization}
                 />
             </div>
-            {activeOrganization && (
+            {activeOrg && (
                 <InviteButton 
                     activeOrganization={activeOrganization}
                 />

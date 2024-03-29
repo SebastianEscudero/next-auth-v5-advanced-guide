@@ -55,7 +55,6 @@ export const OrganizationInvite = ({
                 }
               })
         })
-        console.log(validEmails)
     }
 
     return (

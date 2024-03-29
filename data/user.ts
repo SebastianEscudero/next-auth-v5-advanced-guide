@@ -25,6 +25,19 @@ export const getUserById = async (id: string) => {
               }
             }
           }
+        },
+        invitations: {
+          select: {
+            id: true,
+            email: true,
+            status: true,
+            organization: { 
+              select: {
+                id: true,
+                name: true
+              }
+            }
+          }
         }
       },
     });

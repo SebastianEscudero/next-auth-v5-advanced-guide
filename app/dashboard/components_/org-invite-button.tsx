@@ -16,18 +16,20 @@ export const InviteButton = ({
     activeOrganization,
 }: InviteButtonProps) => {
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="auth">
-                    <Plus className="h-4 w-4 mr-2"/>
-                    Invite Members
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="min-h-[500px] w-full max-w-[768px]">
-                <OrganizationInvite
-                    activeOrganization={activeOrganization}
-                />
-            </DialogContent>
-        </Dialog>
+        activeOrganization !== null && activeOrganization !== "null" && (
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="auth">
+                        <Plus className="h-4 w-4 mr-2"/>
+                        Invite Members
+                    </Button>
+                </DialogTrigger>
+                <DialogContent className="min-h-[500px] w-full max-w-[768px]">
+                    <OrganizationInvite
+                        activeOrganization={activeOrganization}
+                    />
+                </DialogContent>
+            </Dialog>
+        )
     )
 }
