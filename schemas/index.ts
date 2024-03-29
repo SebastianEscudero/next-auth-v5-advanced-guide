@@ -69,3 +69,7 @@ export const OrganizationSchema = z.object({
     message: "Name is required",
   }),
 });
+
+export const OrganizationInviteSchema = z.object({
+  emails: z.array(z.string().email().optional()),
+});

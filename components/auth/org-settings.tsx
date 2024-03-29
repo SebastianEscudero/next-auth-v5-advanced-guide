@@ -109,7 +109,7 @@ export const OrganizationSettings = ({
           {selectedSection}
         </h3>
         {selectedSection === 'Members' ? (
-          <ul>
+          <ul className="border-t pt-4">
             {activeOrg?.users.map((orgUser: any) => (
               <li key={orgUser.id} className="flex">
                 <Avatar>

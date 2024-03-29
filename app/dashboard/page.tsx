@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { Sidebar } from "./components_/sidebar";
-import { UserButton } from "@/components/auth/user-button";
 import { EmptyOrg } from "@/components/empty-org";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { OrgSidebar } from "./components_/org-sidebar";
 import { Navbar } from "./components_/navbar";
+import { EmailTemplate } from "@/components/email-template";
 
 const DashboardPage = () => {
   const [activeOrganization, setActiveOrganization] = useState<string | null>(null);
@@ -21,8 +21,6 @@ const DashboardPage = () => {
     if (!activeOrganization) return;
     localStorage.setItem("activeOrganization", activeOrganization);
   }, [activeOrganization]);
-
-  console.log(activeOrganization)
 
   return (
     <main className="h-full">
@@ -46,8 +44,7 @@ const DashboardPage = () => {
                 <EmptyOrg setActiveOrganization={setActiveOrganization} />
               ) : (
                 <div>
-                  <h1>{user?.name} activeorg: {activeOrganization}</h1>
-                  <UserButton />
+                  <h1 className="text-2xl font-bold">Welcome to {activeOrganization}</h1>
                 </div>
               )}
             </div>

@@ -1,3 +1,4 @@
+import { EmailTemplate } from "@/components/email-template";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -12,7 +13,12 @@ export const sendTwoFactorTokenEmail = async (
     from: "onboarding@resend.dev",
     to: email,
     subject: "2FA Code",
-    html: `<p>Your 2FA code: ${token}</p>`
+    html: `
+      <div style="text-align: center;">
+        <img src="https://www.sketchlie.com/logo.svg" alt="Sketchlie Logo" style="margin-bottom: 10px;"/>
+        <p>Your 2FA code: ${token}</p>
+      </div>
+    `
   });
 };
 
@@ -26,7 +32,12 @@ export const sendPasswordResetEmail = async (
     from: "onboarding@resend.dev",
     to: email,
     subject: "Reset your password",
-    html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`
+    html: `
+      <div style="text-align: center;">
+        <img src="https://www.sketchlie.com/logo.svg" alt="Sketchlie Logo" style="margin-bottom: 10px;"/>
+        <p>Click <a href="${resetLink}">here</a> to reset password.</p>
+      </div>
+    `
   });
 };
 
@@ -40,6 +51,27 @@ export const sendVerificationEmail = async (
     from: "onboarding@resend.dev",
     to: email,
     subject: "Confirm your email",
-    html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`
+    html: `
+      <div style="text-align: center;">
+        <img src="https://www.sketchlie.com/logo.svg" alt="Sketchlie Logo" style="margin-bottom: 10px;"/>
+        <p>Click <a href="${confirmLink}">here</a> to confirm email.</p>
+      </div>
+    `
+  });
+};
+
+export const sendOrganizationInvite = async (
+  email: string, 
+  activeOrgName: any,
+  user: any
+) => {
+  const dashboardLink = `http://localhost:3000/dashboard`;
+
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: `${user.name} has invited you to join ${activeOrgName} - Sketchlie`,
+    text: `${user.name} has invited you to join ${activeOrgName} - Sketchlie. Click here to join: ${dashboardLink}`,
+    react: EmailTemplate({ user: user, activeOrgName: activeOrgName, dashboardLink: dashboardLink}),
   });
 };

@@ -7,7 +7,7 @@ import { useTransition, useState } from "react";
 import { useSession } from "next-auth/react";
 import { OrganizationSchema } from "@/schemas";
 
-import {  DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {  DialogClose, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -101,13 +101,15 @@ export const CreateOrganization = ({
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button
-            disabled={isPending}
-            type="submit"
-            variant="auth"
-          >
-            Create Organization
-          </Button>
+          <DialogClose>
+            <Button
+              disabled={isPending}
+              type="submit"
+              variant="auth"
+            >
+              Create Organization
+            </Button>
+          </DialogClose>
         </form>
       </Form>
     </>

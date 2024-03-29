@@ -2,6 +2,7 @@
 
 import { OrganizationSwitcher } from "@/components/auth/org-switcher";
 import { UserButton } from "@/components/auth/user-button";
+import { InviteButton } from "./org-invite-button";
 
 interface NavbarProps {
     activeOrganization: string | null;
@@ -24,7 +25,11 @@ export const Navbar = ({
                     activeOrganization={activeOrganization}
                 />
             </div>
-            <p>invite button</p>
+            {activeOrganization && (
+                <InviteButton 
+                    activeOrganization={activeOrganization}
+                />
+            )}
             <UserButton />
         </div>
     )
