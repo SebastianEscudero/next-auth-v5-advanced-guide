@@ -24,7 +24,7 @@ export const InviteButton = ({
                         Invite Members
                     </Button>
                 </DialogTrigger>
-                <DialogContent className="min-h-[500px] w-full max-w-[768px]">
+                <DialogContent className="min-h-[450px] w-full max-w-[768px]">
                     <OrganizationInvite
                         activeOrganization={activeOrganization}
                     />

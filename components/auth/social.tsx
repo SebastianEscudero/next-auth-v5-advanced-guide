@@ -21,12 +21,12 @@ export const Social = () => {
     <div className="flex items-center w-full gap-x-2">
       <Button
         size="lg"
-        className="w-full"
+        className="w-full border border-black"
         variant="outline"
         onClick={() => onClick("google")}
       >
-        <FcGoogle className="h-5 w-5" />
-        <p className="ml-2">Continue with Google</p>
+        <FcGoogle className="h-5 w-5 flex-shrink-0" />
+        <p className="ml-2 text-[16px]">Continue with Google</p>
       </Button>
     </div>
   );
