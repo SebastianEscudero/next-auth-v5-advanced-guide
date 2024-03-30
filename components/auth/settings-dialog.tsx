@@ -6,14 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition, useState } from "react";
 import { useSession } from "next-auth/react";
 
-import { Switch } from "@/components/ui/switch";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/components/ui/avatar";
+
 import { SettingsSchema } from "@/schemas";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -25,15 +23,14 @@ import {
   FormControl,
   FormItem,
   FormLabel,
-  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { UserRole } from "@prisma/client";
 import { useSettingsDialog } from "@/actions/use-settings-dialog";
+import { FaUser } from "react-icons/fa";
 
 export const SettingsModal = () => {
   const settingsDialog = useSettingsDialog();
@@ -52,7 +49,6 @@ export const SettingsModal = () => {
       name: user?.name || undefined,
       email: user?.email || undefined,
       role: user?.role || undefined,
-      isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
     }
   });
 
@@ -76,10 +72,24 @@ export const SettingsModal = () => {
   return (
     <div>
       <Dialog open={settingsDialog.isOpen} onOpenChange={settingsDialog.onClose}>
-        <DialogContent>
+        <DialogContent className="w-full max-w-[768px]">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold">Settings</DialogTitle>
           </DialogHeader>
+          <div className="flex">
+            <Avatar>
+              <AvatarImage src={user?.image || ""} />
+              <AvatarFallback className="bg-custom-blue">
+                <FaUser className="text-white" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="ml-2">
+              <p className="truncate text-[14px]">
+                  {user?.name}<span className="bg-[#D8E0FC] px-[4px] py-[2px] rounded-sm text-[12px] text-custom-blue ml-1">You</span>
+              </p>
+              <p className="truncate text-[12px] text-zinc-400">{user?.email}</p>
+            </div>
+          </div>
           <Form {...form}>
             <form
               className="space-y-6"
@@ -160,58 +170,6 @@ export const SettingsModal = () => {
                       )}
                     />
                   </>
-                )}
-                <FormField
-                  control={form.control}
-                  name="role"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Role</FormLabel>
-                      <Select
-                        disabled={isPending}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value={UserRole.ADMIN}>
-                            Admin
-                          </SelectItem>
-                          <SelectItem value={UserRole.USER}>
-                            User
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {user?.isOAuth === false && (
-                  <FormField
-                    control={form.control}
-                    name="isTwoFactorEnabled"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                        <div className="space-y-0.5">
-                          <FormLabel>Two Factor Authentication</FormLabel>
-                          <FormDescription>
-                            Enable two factor authentication for your account
-                          </FormDescription>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            disabled={isPending}
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
                 )}
               </div>
               <FormError message={error} />
