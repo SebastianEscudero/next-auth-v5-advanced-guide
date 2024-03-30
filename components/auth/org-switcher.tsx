@@ -17,6 +17,7 @@ import { CreateOrganization } from "./create-organization";
 import { OrganizationSettings } from "./org-settings";
 import { Button } from "../ui/button";
 import { acceptInvite } from "@/actions/accept-invite";
+import { useSession } from "next-auth/react";
 
 
 interface OrganizationSwitcherProps {
@@ -29,7 +30,7 @@ export const OrganizationSwitcher = ({
     setActiveOrganization,
 }: OrganizationSwitcherProps) => {
     const user = useCurrentUser();
-
+    const { update } = useSession();
     if (!user) return null;
 
     const hasOrg = user.organizations.length > 0
@@ -119,7 +120,13 @@ export const OrganizationSwitcher = ({
                                 </p>
                                 <DropdownMenuItem className="ml-auto border border-zinc-300 p-0">
                                     <Button
-                                        onClick={() => acceptInvite(invitation.organization.id, invitation.id)}
+                                        onClick={() => {
+                                            acceptInvite(invitation.organization.id, invitation.id)
+                                                .then(() => {
+                                                    setActiveOrganization(invitation.organization.id);
+                                                    update();
+                                                });
+                                        }}
                                         variant="ghost"
                                     >
                                         Join

@@ -1,7 +1,5 @@
 "use server";
 
-import * as z from "zod";
-import { update } from "@/auth";
 import { db } from "@/lib/db";
 import { getUserById } from "@/data/user";
 import { currentUser } from "@/lib/auth";

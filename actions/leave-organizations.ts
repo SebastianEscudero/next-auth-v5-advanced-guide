@@ -1,5 +1,6 @@
 "use server";
 
+import { update } from "@/auth";
 import { db } from "@/lib/db";
 
 export const leaveOrganization = async (orgId: string, userId: string) => {
