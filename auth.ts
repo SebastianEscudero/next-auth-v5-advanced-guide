@@ -1,5 +1,4 @@
 import NextAuth from "next-auth"
-import { UserRole } from "@prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { db } from "@/lib/db";
@@ -43,10 +42,6 @@ export const {
         session.user.id = token.sub;
       }
 
-      if (token.role && session.user) {
-        session.user.role = token.role as UserRole;
-      }
-
       if (session.user) {
         session.user.invitations = token.invitations as any[];
         session.user.organizations = token.organizations as any[];
@@ -71,7 +66,6 @@ export const {
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
       token.email = existingUser.email;
-      token.role = existingUser.role;
       token.invitations = existingUser.invitations;
       token.organizations = await Promise.all(existingUser.organizations.map(async (org) => ({
         id: org.organization.id,
