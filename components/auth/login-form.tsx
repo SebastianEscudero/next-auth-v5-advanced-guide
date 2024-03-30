@@ -70,7 +70,7 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Welcome back"
+      headerLabel="Sign in to Sketchlie"
       backButtonLabel="Don't have an account?"
       backButtonHref="/auth/register"
       showSocial
