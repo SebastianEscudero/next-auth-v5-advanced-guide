@@ -1,13 +1,11 @@
 "use server";
 
-import { update } from "@/auth";
 import { db } from "@/lib/db";
 import { getUserById } from "@/data/user";
 import { currentUser } from "@/lib/auth";
 
 
-export const acceptInvite = async (
-  organizationId: string,
+export const rejectInvite = async (
   invitationId: string
 ) => {
   const user = await currentUser();
@@ -31,17 +29,10 @@ export const acceptInvite = async (
     return { error: "Invalid invitation" };
   }
 
-  await db.organizationUser.create({
-    data: {
-      userId: dbUser.id,
-      organizationId: organizationId,
-    },
-  });
-
   // Delete the invitation
   await db.organizationInvitation.delete({
     where: { id: invitationId },
   });
 
-  return { success: "Invitation Accepted!" }
+  return { success: "Invitation Rejected" }
 }

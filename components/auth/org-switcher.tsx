@@ -18,6 +18,7 @@ import { OrganizationSettings } from "./org-settings";
 import { Button } from "../ui/button";
 import { acceptInvite } from "@/actions/accept-invite";
 import { useSession } from "next-auth/react";
+import { rejectInvite } from "@/actions/reject-invite";
 
 
 interface OrganizationSwitcherProps {
@@ -32,7 +33,6 @@ export const OrganizationSwitcher = ({
     const user = useCurrentUser();
     const { update } = useSession();
     if (!user) return null;
-
     const hasOrg = user.organizations.length > 0
 
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
@@ -118,13 +118,26 @@ export const OrganizationSwitcher = ({
                                 <p className="ml-5 text-sm truncate">
                                     {invitation.organization.name}
                                 </p>
-                                <DropdownMenuItem className="ml-auto border border-zinc-300 p-0">
+                                <DropdownMenuItem className="ml-auto p-0 mr-2">
+                                    <Button
+                                        onClick={() => {
+                                            rejectInvite(invitation.id)
+                                                .then(() => {;
+                                                update({ event: "session" });
+                                                });
+                                        }}
+                                        variant="destructive"
+                                    >
+                                        Reject
+                                    </Button>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="border border-zinc-300 p-0">
                                     <Button
                                         onClick={() => {
                                             acceptInvite(invitation.organization.id, invitation.id)
                                                 .then(() => {
                                                     setActiveOrganization(invitation.organization.id);
-                                                    update();
+                                                    update({ event: "session" });
                                                 });
                                         }}
                                         variant="ghost"
