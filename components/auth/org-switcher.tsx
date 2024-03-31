@@ -37,7 +37,7 @@ export const OrganizationSwitcher = ({
 
     const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
     const otherOrgs = user.organizations.filter(org => org.id !== activeOrganization);
-
+    const Initial = activeOrg?.name.charAt(0).toUpperCase();
     const invitations = user.invitations;
 
     return (
@@ -49,7 +49,7 @@ export const OrganizationSwitcher = ({
                             <Image
                                 fill
                                 alt={activeOrg.name}
-                                src="/organization.webp"
+                                src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
                                 className="rounded-md"
                             />
                         </div>
@@ -76,7 +76,7 @@ export const OrganizationSwitcher = ({
                         <div className="flex mb-3 items-center p-5 pb-0">
                             <Image
                                 alt={activeOrg.name}
-                                src="/organization.webp"
+                                src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
                                 className="rounded-md"
                                 width={45}
                                 height={45}
@@ -110,7 +110,7 @@ export const OrganizationSwitcher = ({
                             >
                                 <Image
                                     alt={invitation.organization.id}
-                                    src="/organization.webp"
+                                    src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${invitation.organization.name.charAt(0).toUpperCase()}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
                                     className="rounded-md flex-shrink-0"
                                     width={35}
                                     height={35}
@@ -159,7 +159,7 @@ export const OrganizationSwitcher = ({
                             >
                                 <Image
                                     alt={org.name}
-                                    src="/organization.webp"
+                                    src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${org.name.charAt(0).toUpperCase()}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
                                     className="rounded-md flex-shrink-0"
                                     width={35}
                                     height={35}

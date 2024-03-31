@@ -13,6 +13,7 @@ interface ItemProps {
 
     export const Item = ({ id, name, activeOrganization, setActiveOrganization }: ItemProps) => {
         const isActive = activeOrganization === id;
+        const Initial = name.charAt(0).toUpperCase();
         const onClick = () => {
             setActiveOrganization(id);
         };
@@ -23,7 +24,7 @@ interface ItemProps {
                 <Image
                     fill 
                     alt={name}
-                    src="/organization.webp"
+                    src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
                     onClick={onClick}
                     className={cn(
                         "rounded-md cursor-pointer opacity-75 hover:opacity-100 transition",

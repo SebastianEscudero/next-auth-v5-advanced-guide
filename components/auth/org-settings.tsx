@@ -51,6 +51,7 @@ export const OrganizationSettings = ({
 }: OrganizationSettingsProps) => {
   const user = useCurrentUser();
   const activeOrg = user?.organizations.find(org => org.id === activeOrganization);
+  const Initial = activeOrg?.name.charAt(0).toUpperCase();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
   const [selectedSection, setSelectedSection] = useState('Members');
@@ -93,7 +94,7 @@ export const OrganizationSettings = ({
         <div className="flex mb-3 items-center pb-0">
           <Image
             alt={activeOrg.name}
-            src="/organization.webp"
+            src={`https://img.clerk.com/preview.png?size=144&seed=seed&initials=${Initial}&isSquare=true&bgType=marble&bgColor=6c47ff&fgType=initials&fgColor=FFFFFF&type=organization&w=48&q=75`}
             className="rounded-md"
             width={35}
             height={35}

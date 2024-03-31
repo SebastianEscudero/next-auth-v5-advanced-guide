@@ -15,8 +15,10 @@ export const List = ({
     const user = useCurrentUser();
     if (!user) return null;
 
+    const hasOrganizations = user.organizations.length > 0;
+
     return (
-        <ul className="space-y-4">
+        <ul className={`space-y-4 ${hasOrganizations ? 'mb-4' : ''}`}>
             {user?.organizations.map((org) => (
                 <Item 
                     key={org.id} 
