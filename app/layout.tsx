@@ -22,7 +22,7 @@ export default async function RootLayout({
 
   return (
     <SessionProvider session={session}>
-      <html lang="en">
+      <html lang="es">
         <body className={inter.className}>
           <Toaster />
           <SettingsModalProvider />
